@@ -1,123 +1,172 @@
-# Proyecto
+# Proyecto Registro de Asistencia
 ## Descripción
-La aplicación permitirá cargar datos de Estudiantes desde un archivo CSV y ofrecerá varias funcionalidades como Marcar Asistencia, como Mostrar Asistencia de manera general, o como Mostrar Asistencia por RUT.
+
+El objetivo del programa es gestionar y registrar la asistencia de los estudiantes a las clases en una universidad de manera eficiente y precisa. El sistema debe ser capaz de manejar un gran número de materias y estudiantes, permitiendo búsquedas rápidas y actualizaciones de los registros de asistencia.
+
 ## Cómo compilar y ejecutar
-Para ejecutar la `tarea2.c`, primero debemos compilar los archivos fuente. Desde la carpeta raíz del proyecto, ejecuta el siguiente comando en tu terminal:
+
+
+
 ````
-gcc tdas/*.c tarea2.c -Wno-unused-result -o tarea2
+gcc tdas/*.c main.c -Wno-unused-result -o main.c
 ````
 
 Y luego ejecutar:
 ````
-./tarea2
+./main.c
 ````
 
 ## Funcionalidades
 ### Funcionando correctamente:
-- Cargar películas desde el csv: Se cargan las películas desde el archivo "Top1500.csv".
-- Buscar por id: Se le pide pide al usuario el ID que quiere buscar, y se le muestra la película correspondiente.
-- Buscar por género: Se le pide al usuario el Género que quiere buscar, y se le muestran las peliculas correspondientes a ese Género.
-- Buscar por década: Se le pide al usuario la Década que quiere buscar, y se le muestran las películas correspondientes. Es IMPORTANTE ingresar la década como por ej. "2000, 1990, 1980".
-- Buscar por década y género: Se le pide al usuario el Género que quiere buscar, y si se encuentra el Género se le pide la Década para mostrar las películas correspondientes.
-- Salir: Sale del programa finalizando el sistema.
-  
-### Problemas conocidos:
-- Podria ocurrir problemas al ingresar numeros o palabras en las funciones de búsqueda que no deberian ir, lo que podría provocar que el programa no funcione correctamente o que no responda como se espera.
 
-### A mejorar:
-- Implementar una interfaz de usuario más amigable.
-- Permitir que el programa pueda leer diferentes csv de peliculas.
+- Marcar Asistencia
+- Mostrar Asistencias Generales
+- Mostrar Asistencia Por RUT
+- Mostrar Asistencia Por Curso
+- Avanzar A La Siguiente Clase
+
 
 ## Ejemplo de uso
 
-**Paso 1: Cargar las Películas**
+**Opcion 1: Marcar Asistencia**
 
-Se comienza cargando las películas del "Top1500.csv".
-
-```
-Ingrese su opción: 1
-Eligio la opcion de Cargar Películas
-ID: tt0068646, Título: The Godfather, Año: 1972
-Genero: Crime
-Genero: Drama
-Presione una tecla para continuar...
-```
-
-El programa muestra las 1500 películas que se cargaron a la base de datos, mostrando su ID, Título, Año y Géneros.
-
-**Paso 2: Buscar por id**
-
-Si ingresa el ID valido de una pelicula, se le mostrara la pelicula correspondiente junto a su titulo, y año. 
+Se pide al usuario que ingrese su rut y el curso donde se quiere registrar su asistencia
 
 ```
-Ingrese su opción: 2
-Eligio la opcion de Buscar por id
-Ingrese el id de la película: tt0068646
-Título: The Godfather, Año: 1972
-Presione una tecla para continuar...
+Ingrese el RUT del estudiante: 17223344-5
+
+Ingrese el nombre del curso: 
+
+Fisica
+Calculo
+Algebra
+Filosofía
+Programacion
+
+Curso Ingresado: Fisica
+
+Estuvo Presente?
+1 para presente, 0 para ausente
+
+Opcion ingresada: 1
+
+Alumno Juan Perez ha quedado presente en la clase 1
 ```
 
-**Paso 3: Buscar por director**
+ Marca la asistencia dentro del curso.
 
-Esta funcion no la realice ya que era opcional
-```
-Ingrese su opción: 3
-Presione una tecla para continuar...
-```
-
-**Paso 4: Buscar por género**
-
-Si ingresa un género, se le mostraran las peliculas que corresponden a ese género, mostrandole el titulo, año y género.
+**Opcion 2: Mostrar Asistencia General**
 
 ```
-Ingrese su opción: 4
-Eligio la opcion de Buscar por Género
-Ingrese el genero que quiere buscar: 
-Drama
-Título: Casablanca, Año: 1942
-Genero: Drama
-Genero: Romance
-Genero: War
-...
+RUT: 17223344-5, Nombre: Juan Pérez, Carrera: Ingeniería Civil
+
+Curso: Física Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Ausente
+Curso: Cálculo Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
+Curso: Álgebra Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
+Curso: Filosofía Paralelo 1
+Asistencias:
+    Clase 1: Ausente
+    Clase 2: Presente
+Curso: Programación Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Ausente
+
+RUT: 17334455-6, Nombre: Ana Gómez, Carrera: Ingeniería Comercial
+
+Curso: Física Paralelo 2
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
+
+
+```
+El programa imprime todas las clases registradas de todos los estudiantes hasta el momento
+
+
+**Opcion 3: Mostrar Asistencia por Rut**
+
+El programa pide el rut para buscar al estudiante dentro del mapa
+
+```
+RUT: 17223344-5, Nombre: Juan Pérez, Carrera: Ingeniería Civil
+
+Curso: Física Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Ausente
+Curso: Cálculo Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
+Curso: Álgebra Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
+Curso: Filosofía Paralelo 1
+Asistencias:
+    Clase 1: Ausente
+    Clase 2: Presente
+Curso: Programación Paralelo 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Ausente
 ```
 
-**Paso 5: Buscar por década**
+Se muestra toda la informacion relevante del estudiante
 
-Si ingresa la decada que quiere buscar, se le mostraran películas que corresponden a esa década, junto a su titulo y año.
+**Opcion 4: Mostrar Asistencia por Curso**
+
+El programa pide al usuario que se ingrese el curso
+
 ```
-Ingrese su opción: 5
-Eligio la opcion de Buscar por Década
-Ingrese la decada que quiere buscar: 
-2000
-Título: The Lord of the Rings: The Fellowship of the Ring, Año: 2001
-...
+Ingrese el nombre del curso que quiere buscar: Física
+Asistencia hasta la clase 2
+
+RUT: 17223344-5, Nombre: Juan Pérez, Carrera: Ingeniería Civil
+
+Curso: Física Paralelo: 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Ausente
+
+RUT: 17778899-0, Nombre: José Hernández, Carrera: Ingeniería Civil
+
+Curso: Física Paralelo: 1
+Asistencias:
+    Clase 1: Ausente
+    Clase 2: Ausente
+
+RUT: 18223344-5, Nombre: Rosa Gutiérrez, Carrera: Ingeniería Informática
+
+Curso: Física Paralelo: 1
+Asistencias:
+    Clase 1: Presente
+    Clase 2: Presente
 ```
 
-**Paso 6: Buscar por rango de calificaciones**
+Imprime todas las clases que los estudiantes han asistido hasta el momento
 
-Esta funcion no la realice ya que era opcional
+**Opcion 5: Avanzar A La Siguiente Clase**
+
+```
+Estabas en la clase 1, Has avanzado a la clase 2
+```
+Avanza a la siguiente clase lo que permite registrar la asistencia de la siguiente clase 
+
+**Paso 6: Salir**
+
+Al ingresar la opcion 6 se finalizara el programa.
 ```
 Ingrese su opción: 6
-Presione una tecla para continuar...
-```
-
-**Paso 7: Buscar por década y género**
-
-Si ingresa el género y luego la década, se le mostraran las peliculas que corresponden junto a su titulo y año.
-```
-Ingrese su opción: 7
-Eligio la opcion de Buscar por Década y Género
-Ingrese el genero de las peliculas que quiere buscar: 
-Drama
-Ingrese la decada de las peliculas que quiere buscar: 
-2000
-Título: The Lord of the Rings: The Return of the King, Año: 2003
-...
-```
-**Paso 8: Salir**
-
-Al ingresar la opcion 8 se finalizara el programa.
-```
-Ingrese su opción: 8
 Presione una tecla para continuar...
 ```
