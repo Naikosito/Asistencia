@@ -6,35 +6,101 @@
 #include "TDAs/extra.h"
 #include "TDAs/hashmap.h"
 
-#define MAX_DIAS 30  // Máximo número de días que se pueden registrar
-#define NUM_CURSOS 5  // Número de cursos
-
-const char *cursos[NUM_CURSOS] = {"Fisica", "Calculo", "Algebra", "Filosofia", "Programacion"};
-
 typedef struct {
-    char rut[12];
-    char nombre[50];
-    char carrera[50];
-    List* cursos;
-    int asistencias[NUM_CURSOS][MAX_DIAS];  // Asistencias por curso y por día
+    char rut[12]; // Rut del alumno
+    char nombre[50]; // Nombre del alumno
+    char carrera[50]; // Nombre de la carrera
+    HashMap* cursos; // Mapa de cursos del alumno
 } Alumno;
 
 typedef struct {
-    char nombreCurso[50];
-    int paralelo;
-    List* alumnos; 
-    List* asistenciaClases[60]; 
+    char nombreCurso[50]; // Nombre del curso
+    int numParalelo; // Número del paralelo
+    HashMap* alumnos; // Mapa de alumnos en el curso
+    int asistenciaClases[60]; // Lista de alumnos presentes para cada clase / 60 Son las clases totales de un ramo
 } Curso;
+
+// Definición de la estructura Paralelo
+typedef struct{
+    List* cursos; //Lista de cursos en este paralelo
+} Paralelo;
+
+
+#define HASHMAP_SIZE 100
+
+// Mapa global para almacenar todos los cursos
+static Hashmap* cursosMap;
+
+void insertarCurso(Curso* curso) {
+    hashmapInsert(cursosMap, curso->nombreCurso, curso);
+}
+
+Curso* buscarCurso(char *nombreCurso, int paralelo) {
+    Pair* curso = searchMap(cursosMap, nombreCurso);
+    if (curso != NULL && curso->numParalelo == paralelo) {
+        return curso;
+    }
+    return NULL;
+}
+
+void cargarEstudiantes() {
+    cursosMap = createHashmap(HASHMAP_SIZE);
+    FILE *archivo = fopen("CVS/Data.csv", "r");
+    if (archivo == NULL) {
+        perror("Error al abrir el archivo");
+        return;
+    }
+
+    char linea[256];
+    fgets(linea, sizeof(linea), archivo); // Omitir la primera línea (cabecera)
+    while (fgets(linea, sizeof(linea), archivo)) {
+        Alumno *alumno = malloc(sizeof(Alumno));
+        alumno->cursos = createHashmap(HASHMAP_SIZE);
+        sscanf(linea, "%[^,],%[^,],%[^,]", alumno->rut, alumno->nombre, alumno->carrera);
+
+        int paraleloFisica, paraleloCalculo, paraleloAlgebra, paraleloFilosofia, paraleloProgramacion;
+        sscanf(linea, "%*[^,],%*[^,],%*[^,],%d,%d,%d,%d,%d", &paraleloFisica, &paraleloCalculo, &paraleloAlgebra, &paraleloFilosofia, &paraleloProgramacion);
+
+        insertarEnCurso("fisica", paraleloFisica, alumno);
+        insertarEnCurso("calculo", paraleloCalculo, alumno);
+        insertarEnCurso("algebra", paraleloAlgebra, alumno);
+        insertarEnCurso("filosofia", paraleloFilosofia, alumno);
+        insertarEnCurso("programacion", paraleloProgramacion, alumno);
+    }
+    fclose(archivo);
+    printf("Estudiantes cargados exitosamente.\n");
+}
+
+void insertarEnCurso(char *nombreCurso, int paralelo, Alumno* alumno) {
+    Curso *curso = buscarCurso(nombreCurso, paralelo);
+    if (curso == NULL) {
+        curso = malloc(sizeof(Curso));
+        strcpy(curso->nombreCurso, nombreCurso);
+        curso->numParalelo = paralelo;
+        curso->alumnos = createHashmap(HASHMAP_SIZE);
+
+        for (int i = 0; i < 60; i++) {
+            curso->asistenciaClases[i] = list_create();
+        }
+        insertarCurso(curso);
+    }
+
+    hashmapInsert(curso->alumnos, alumno->rut, alumno);
+    hashmapInsert(alumno->cursos, nombreCurso, curso);
+
+    for (int i = 0; i < 60; i++) {
+        list_pushBack(curso->asistenciaClases[i], false);
+    }
+}
+
+Pair* buscarAlumnoPorRUT(Curso *curso, const char *rut) {
+    return searchMap(curso->alumnos, &rut);
+}
 
 
 int main() {
 
-    HashMap *estudiantes_byRut = createMap(200);
-
-    char rut[20], nombre_curso[50];
-    int dia_actual = 1;
-    int paralelo;
-    int dia, presente;
+    cargarEstudiantes();
     
     char opcion;
     do {
@@ -54,7 +120,7 @@ int main() {
 
       switch (opcion) {      
         case '1':
-            // marcarAsistencia();        
+            marcarAsistencia();        
             break;
           
         case '2':
